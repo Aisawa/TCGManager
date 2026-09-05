@@ -5,7 +5,7 @@ namespace TCGManager.Domain.Entities;
 public class CardSet : BaseEntity
 {
     public string ExternalId { get; set; } = string.Empty;
-    public int GameId { get; set; }
+    public long GameId { get; set; }
     public Game Game { get; set; } = null!;
     public string Name { get; set; } = string.Empty;
     public string? NameFr { get; set; }

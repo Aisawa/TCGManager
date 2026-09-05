@@ -5,7 +5,7 @@ namespace TCGManager.Domain.Entities;
 
 public class SyncLog : BaseEntity
 {
-    public int GameId { get; set; }
+    public long GameId { get; set; }
     public Game Game { get; set; } = null!;
     public SyncStatus Status { get; set; } = SyncStatus.Pending;
     public int CardsSynced { get; set; }
