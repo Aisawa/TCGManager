@@ -1,23 +1,87 @@
 ﻿@inherits LayoutComponentBase
+@using MudBlazor
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<MudThemeProvider />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
+<MudLayout>
+    <MudAppBar Elevation="1" Color="Color.Primary" Dense="false">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu"
+                       Color="Color.Inherit"
+                       Edge="Edge.Start"
+                       OnClick="ToggleDrawer" />
+        <MudText Typo="Typo.h6" Class="ml-2">
+            🃏 TCGManager
+        </MudText>
+        <MudSpacer />
+        <MudTextField T="string"
+                      Placeholder="Rechercher..."
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      Variant="Variant.Outlined"
+                      Margin="Margin.Dense"
+                      Class="mx-4"
+                      Style="max-width: 300px;" />
+        <MudSpacer />
+        <AuthorizeView>
+            <Authorized>
+                <MudText Class="mr-2">@context.User.Identity?.Name</MudText>
+                <MudIconButton Icon="@Icons.Material.Filled.AccountCircle"
+                               Color="Color.Inherit" />
+            </Authorized>
+            <NotAuthorized>
+                <MudButton Href="/auth/login"
+                           Color="Color.Inherit"
+                           StartIcon="@Icons.Material.Filled.Login">
+                    Connexion
+                </MudButton>
+            </NotAuthorized>
+        </AuthorizeView>
+    </MudAppBar>
 
-        <article class="content px-4">
+    <MudDrawer @bind-Open="_drawerOpen"
+               Elevation="2"
+               ClipMode="DrawerClipMode.Always">
+        <MudNavMenu>
+            <MudText Typo="Typo.h6" Class="px-4 my-4">Navigation</MudText>
+            <MudNavLink Href="/"
+                        Icon="@Icons.Material.Filled.Dashboard"
+                        Match="NavLinkMatch.All">
+                Accueil
+            </MudNavLink>
+            <MudNavLink Href="/yugioh/cards"
+                        Icon="@Icons.Material.Filled.Style">
+                Cartes
+            </MudNavLink>
+            <MudNavLink Href="/yugioh/sets"
+                        Icon="@Icons.Material.Filled.LibraryBooks">
+                Sets
+            </MudNavLink>
+            <MudNavLink Href="/collection"
+                        Icon="@Icons.Material.Filled.CollectionsBookmark">
+                Ma Collection
+            </MudNavLink>
+            <MudDivider Class="my-2" />
+            <AuthorizeView>
+                <MudNavLink Href="/admin/sync"
+                            Icon="@Icons.Material.Filled.Sync">
+                    Synchronisation
+                </MudNavLink>
+            </AuthorizeView>
+        </MudNavMenu>
+    </MudDrawer>
+
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="my-4">
             @Body
-        </article>
-    </main>
-</div>
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
 
-<div id="blazor-error-ui" data-nosnippet>
-    An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
-    <span class="dismiss">🗙</span>
-</div>
+@code {
+    private bool _drawerOpen = true;
+
+    private void ToggleDrawer() => _drawerOpen = !_drawerOpen;
+}

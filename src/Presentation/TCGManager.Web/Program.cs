@@ -1,27 +1,60 @@
+using Microsoft.AspNetCore.Components.Authorization;
+using MudBlazor.Services;
+using TCGManager.Web;
 using TCGManager.Web.Components;
+using TCGManager.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// ── Blazor ────────────────────────────────────────────────────────────────
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+// ── MudBlazor ─────────────────────────────────────────────────────────────
+builder.Services.AddMudServices(config =>
+{
+    config.SnackbarConfiguration.PositionClass =
+        MudBlazor.Defaults.Classes.Position.BottomRight;
+    config.SnackbarConfiguration.ShowCloseIcon = true;
+    config.SnackbarConfiguration.VisibleStateDuration = 4000;
+});
+
+// ── Localisation FR/EN ────────────────────────────────────────────────────
+builder.Services.AddLocalization(opts => opts.ResourcesPath = "Resources");
+builder.Services.Configure<RequestLocalizationOptions>(opts =>
+{
+    opts.SetDefaultCulture("fr");
+    opts.AddSupportedCultures("fr", "en");
+    opts.AddSupportedUICultures("fr", "en");
+});
+
+// ── Auth ──────────────────────────────────────────────────────────────────
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
+builder.Services.AddCascadingAuthenticationState();
+builder.Services.AddScoped<AuthenticationStateProvider, JwtAuthStateProvider>();
+
+// ── HTTP Client vers l'API ────────────────────────────────────────────────
+var apiBaseUrl = builder.Configuration["ApiBaseUrl"] ?? "http://localhost:5075";
+builder.Services.AddScoped(sp =>
+    new HttpClient { BaseAddress = new Uri(apiBaseUrl) });
+
+// ── Services UI ───────────────────────────────────────────────────────────
+builder.Services.AddScoped<IAuthService, AuthService>();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
-app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
+
+app.UseRequestLocalization();
 app.UseHttpsRedirection();
-
+app.UseStaticFiles();
 app.UseAntiforgery();
-
-app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
-app.Run();
+await app.RunAsync();
