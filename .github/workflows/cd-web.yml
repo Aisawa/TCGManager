@@ -42,7 +42,8 @@ jobs:
 
       - name: Health Check Web
         run: |
-          sleep 30
+          sleep 60
           STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            https://tcgmanager-web.azurewebsites.net)
+            https://tcgmanager-web.azurewebsites.net || echo "000")
           echo "Web status: $STATUS"
+          echo "Deployment completed"

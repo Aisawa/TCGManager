@@ -36,7 +36,7 @@ jobs:
           dotnet ef database update \
             --project src/Infrastructure/TCGManager.Infrastructure \
             --startup-project src/Presentation/TCGManager.Api \
-            --no-build
+            --configuration Release
         env:
           ConnectionStrings__DefaultConnection: ${{ secrets.SQL_CONNECTION_STRING }}
 
