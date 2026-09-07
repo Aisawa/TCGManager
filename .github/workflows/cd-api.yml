@@ -1,0 +1,64 @@
+name: CD - API
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy-api:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore TCGManager.slnx
+
+      - name: Build & Publish API
+        run: |
+          dotnet publish src/Presentation/TCGManager.Api \
+            --configuration Release \
+            --output ./publish/api
+
+      - name: Install EF Core tools
+        run: dotnet tool install --global dotnet-ef
+
+      - name: Run EF Migrations
+        run: |
+          dotnet ef database update \
+            --project src/Infrastructure/TCGManager.Infrastructure \
+            --startup-project src/Presentation/TCGManager.Api \
+            --no-build
+        env:
+          ConnectionStrings__DefaultConnection: ${{ secrets.SQL_CONNECTION_STRING }}
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy API to Azure App Service
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: tcgmanager-api
+          package: ./publish/api
+
+      - name: Health Check
+        run: |
+          sleep 30
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            https://tcgmanager-api.azurewebsites.net/health)
+          echo "Health check status: $STATUS"
+          if [ "$STATUS" != "200" ]; then
+            echo "Health check FAILED"
+            exit 1
+          fi
+          echo "Health check OK"

@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>acce12a9-a7e9-49e4-89c0-c16f91a073c1</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Asp.Versioning.Mvc" Version="10.2.1" />
+    <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="10.2.1" />
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="9.0.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.11">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Scalar.AspNetCore" Version="2.16.20" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\TCGManager.Application\TCGManager.Application.csproj" />
+    <ProjectReference Include="..\..\Core\TCGManager.Contracts\TCGManager.Contracts.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\TCGManager.Infrastructure\TCGManager.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\TCGManager.Integration.YuGiOh\TCGManager.Integration.YuGiOh.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\TCGManager.Integration.Pokemon\TCGManager.Integration.Pokemon.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\TCGManager.Integration.Digimon\TCGManager.Integration.Digimon.csproj" />
+  </ItemGroup>
+
+</Project>

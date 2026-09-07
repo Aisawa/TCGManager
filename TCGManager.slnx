@@ -1,0 +1,24 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/Core/">
+    <Project Path="src/Core/TCGManager.Application/TCGManager.Application.csproj" />
+    <Project Path="src/Core/TCGManager.Contracts/TCGManager.Contracts.csproj" />
+    <Project Path="src/Core/TCGManager.Domain/TCGManager.Domain.csproj" />
+  </Folder>
+  <Folder Name="/src/Infrastructure/">
+    <Project Path="src/Infrastructure/TCGManager.Infrastructure/TCGManager.Infrastructure.csproj" />
+    <Project Path="src/Infrastructure/TCGManager.Integration.Digimon/TCGManager.Integration.Digimon.csproj" />
+    <Project Path="src/Infrastructure/TCGManager.Integration.Pokemon/TCGManager.Integration.Pokemon.csproj" />
+    <Project Path="src/Infrastructure/TCGManager.Integration.YuGiOh/TCGManager.Integration.YuGiOh.csproj" />
+  </Folder>
+  <Folder Name="/src/Presentation/">
+    <Project Path="src/Presentation/TCGManager.Api/TCGManager.Api.csproj" />
+    <Project Path="src/Presentation/TCGManager.Web/TCGManager.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/TCGManager.Api.Tests/TCGManager.Api.Tests.csproj" />
+    <Project Path="tests/TCGManager.Application.Tests/TCGManager.Application.Tests.csproj" />
+    <Project Path="tests/TCGManager.Domain.Tests/TCGManager.Domain.Tests.csproj" />
+    <Project Path="tests/TCGManager.Infrastructure.Tests/TCGManager.Infrastructure.Tests.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,70 @@
+﻿@page "/"
+@using MudBlazor
+
+<PageTitle>TCGManager — Accueil</PageTitle>
+
+<MudText Typo="Typo.h4" GutterBottom="true">
+    🃏 Bienvenue sur TCGManager
+</MudText>
+<MudText Typo="Typo.body1" Class="mb-4">
+    Gérez votre collection de cartes Yu-Gi-Oh!, Pokémon et Digimon.
+</MudText>
+
+<MudGrid>
+    <MudItem xs="12" sm="6" md="4">
+        <MudCard>
+            <MudCardContent>
+                <MudIcon Icon="@Icons.Material.Filled.Style"
+                         Color="Color.Primary" Size="Size.Large" />
+                <MudText Typo="Typo.h6">Cartes</MudText>
+                <MudText Typo="Typo.body2">
+                    Parcourez toutes les cartes disponibles.
+                </MudText>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton Href="/yugioh/cards" Variant="Variant.Text"
+                           Color="Color.Primary">
+                    Voir les cartes
+                </MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+
+    <MudItem xs="12" sm="6" md="4">
+        <MudCard>
+            <MudCardContent>
+                <MudIcon Icon="@Icons.Material.Filled.LibraryBooks"
+                         Color="Color.Secondary" Size="Size.Large" />
+                <MudText Typo="Typo.h6">Sets</MudText>
+                <MudText Typo="Typo.body2">
+                    Explorez tous les sets et votre progression.
+                </MudText>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton Href="/yugioh/sets" Variant="Variant.Text"
+                           Color="Color.Secondary">
+                    Voir les sets
+                </MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+
+    <MudItem xs="12" sm="6" md="4">
+        <MudCard>
+            <MudCardContent>
+                <MudIcon Icon="@Icons.Material.Filled.CollectionsBookmark"
+                         Color="Color.Success" Size="Size.Large" />
+                <MudText Typo="Typo.h6">Ma Collection</MudText>
+                <MudText Typo="Typo.body2">
+                    Gérez et suivez votre collection.
+                </MudText>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton Href="/collection" Variant="Variant.Text"
+                           Color="Color.Success">
+                    Ma collection
+                </MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+</MudGrid>
