@@ -14,20 +14,39 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Requis pour SonarCloud
+          fetch-depth: 0
 
       - name: Setup .NET 10
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
 
+      - name: Setup Java (requis pour SonarScanner)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Install SonarScanner for .NET
+        run: dotnet tool install --global dotnet-sonarscanner
+
       - name: Restore dependencies
         run: dotnet restore TCGManager.slnx
+
+      - name: SonarCloud Begin
+        run: |
+          dotnet sonarscanner begin \
+            /k:"Aisawa_TCGManager" \
+            /o:"aisawa" \
+            /d:sonar.host.url="https://sonarcloud.io" \
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
+            /d:sonar.cs.opencover.reportsPaths="coverage/**/coverage.opencover.xml" \
+            /d:sonar.exclusions="**/Migrations/**,**/wwwroot/**,**/*.Designer.cs"
 
       - name: Build
         run: dotnet build TCGManager.slnx --no-restore --configuration Release
 
-      - name: Unit Tests (sans Testcontainers)
+      - name: Unit Tests
         run: |
           dotnet test TCGManager.slnx \
             --no-build \
@@ -37,14 +56,5 @@ jobs:
             /p:CoverletOutputFormat=opencover \
             --filter "FullyQualifiedName!~Infrastructure.Tests"
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-      - name: Quality Gate Check
-        uses: SonarSource/sonarqube-quality-gate-action@master
-        timeout-minutes: 5
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: SonarCloud End
+        run: dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
