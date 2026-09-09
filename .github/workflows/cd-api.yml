@@ -31,7 +31,7 @@ jobs:
       - name: Install EF Core tools
         run: dotnet tool install --global dotnet-ef
 
-      - name: Run EF Migrations
+- name: Run EF Migrations
         run: |
           dotnet ef database update \
             --project src/Infrastructure/TCGManager.Infrastructure \
